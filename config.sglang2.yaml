@@ -1,0 +1,39 @@
+server:
+  host: 0.0.0.0
+  port: 28083
+  max_concurrency: 32
+  log_level: INFO
+
+# 生成与打分共用同一 SGLang 实例（v0.5.16）
+# curl http://172.31.17.5:30005/v1/chat/completions
+# model: DeepSeek-V4-Flash-0731
+answer:
+  base_url: http://172.31.17.5:30005/v1
+  api_key: ""
+  model: DeepSeek-V4-Flash-0731
+  timeout_seconds: 3600
+  # SGLang v0.5.16 无 per-choice token_ids，必须关闭
+  return_token_ids: false
+  params:
+    temperature: 1.0
+    top_p: 0.95
+    n: 4
+    chat_template_kwargs:
+      thinking: true
+      reasoning_effort: max
+
+judge:
+  base_url: http://172.31.17.5:30005/v1
+  api_key: ""
+  model: DeepSeek-V4-Flash-0731
+  timeout_seconds: 600
+  prompt: |
+    根据原始完整上下文判断哪个候选回答最好，重点考虑正确性、相关性、完整性和指令遵循。
+    只选择候选索引，不要改写、补充、总结或合并候选回答，并严格按照 JSON Schema 输出。
+  params:
+    temperature: 0.1
+    top_p: 0.95
+    n: 1
+    chat_template_kwargs:
+      thinking: true
+      reasoning_effort: max

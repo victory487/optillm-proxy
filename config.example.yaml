@@ -1,0 +1,35 @@
+server:
+  host: 0.0.0.0
+  port: 8080
+  max_concurrency: 32
+  log_level: INFO
+
+answer:
+  base_url: http://answer-vllm:8000/v1
+  api_key: token
+  model: answer-model
+  timeout_seconds: 180
+  # Set false for SGLang v0.5.16, which does not expose per-choice token IDs.
+  return_token_ids: true
+  params:
+    temperature: 1.0
+    top_p: 0.95
+    n: 4
+    chat_template_kwargs:
+      thinking: true
+      reasoning_effort: max
+
+judge:
+  base_url: http://judge-vllm:8000/v1
+  api_key: token
+  model: judge-model
+  timeout_seconds: 60
+  prompt: |
+    根据原始上下文判断哪个候选回答最好。重点考虑正确性、相关性、完整性和帮助性。
+  params:
+    temperature: 0.1
+    top_p: 0.95
+    n: 1
+    chat_template_kwargs:
+      thinking: true
+      reasoning_effort: max
