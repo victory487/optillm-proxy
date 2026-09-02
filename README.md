@@ -3,6 +3,7 @@
 一个面向 vLLM 的异步 Best-of-N 代理。客户端继续使用 OpenAI Chat Completions
 接口；代理让回答模型一次生成 N 个候选，再由独立 judge 模型选择最佳候选。
 
+
 ## 行为约定
 
 - 仅提供非流式 `POST /v1/chat/completions`；`stream=true` 返回 400。
